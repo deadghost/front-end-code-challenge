@@ -3,11 +3,12 @@
    [bidi.ring :refer [make-handler]]
    [immutant.web :as web]
    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
-   [roomkey.site.controller.routes :refer [routes handler-table]]))
+   [roomkey.site.controller.routes :refer [routes]]
+   [roomkey.site.controller.handlers :refer [handler-table]]))
 
 (def site
   (-> (make-handler routes handler-table)
-      #_(wrap-defaults site-defaults)))
+      (wrap-defaults site-defaults)))
 
 (defn run []
   (web/run site

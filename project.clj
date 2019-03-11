@@ -16,12 +16,13 @@
                  [bidi "2.1.2"] ; Routing
                  [kibu/pushy "0.3.8"] ; URL history
                  ]
-  :source-paths ["src/clj"]
+  :source-paths ["src/clj" "src/cljc"]
   :target-path "target/%s"
   :plugins [[lein-garden "0.3.0"]
             [lein-cljsbuild "1.1.7"]
             [lein-figwheel "0.5.13"]]
-  :figwheel {:css-dirs ["resources/public/css"]}
+  :figwheel {:css-dirs ["resources/public/css"]
+             :server-port 3549}
   :garden {:builds [{:id "app"
                      :source-paths ["src/clj"]
                      :stylesheet roomkey.css/stylesheet
@@ -33,11 +34,11 @@
    :dev {:cljsbuild
          {:builds
           [{:id "app"
-            :source-paths ["src/cljs"]
+            :source-paths ["src/cljs" "src/cljc"]
             :compiler {:output-to "resources/public/js/app.js"
                        :output-dir "resources/public/js/out"
                        :asset-path "/js/out"
-                       :main "roomkey.controller.main"
+                       :main "roomkey.app"
                        :pretty-print false
                        :source-map true
                        :optimizations :none}
@@ -46,10 +47,10 @@
    :prod {:cljsbuild
           {:builds
            [{:id "app"
-             :source-paths ["src/cljs"]
+             :source-paths ["src/cljs" "src/cljc"]
              :compiler {:output-to "resources/public/js/app.js"
                         :output-dir "resources/public/js/out"
                         :asset-path "/js/out"
-                        :main "roomkey.controller.main"
+                        :main "roomkey.app"
                         :pretty-print false
                         :optimizations :advanced}}]}}})
