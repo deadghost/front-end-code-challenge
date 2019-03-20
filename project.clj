@@ -8,14 +8,10 @@
                  [io.pedestal/pedestal.service "0.5.4"]
                  [io.pedestal/pedestal.immutant "0.5.4"]
                  [ring/ring-defaults "0.2.1"] ; Middleware
-                 ;; Clojurescript Dependencies
-                 [org.clojure/clojurescript "1.9.854"]
-                 [reagent "0.6.1"] ; react
-                 [re-frame "0.10.1"] ; reagent framework
-                 [prismatic/dommy "1.1.0"] ; Selectors
                  [bidi "2.1.2"] ; Routing
-                 [kibu/pushy "0.3.8"] ; URL history
-                 ]
+
+                 ;; Clojurescript Dependencies
+                 [org.clojure/clojurescript "1.9.908"]]
   :source-paths ["src/clj" "src/cljc"]
   :target-path "target/%s"
   :plugins [[lein-garden "0.3.0"]
@@ -25,7 +21,7 @@
              :server-port 3549}
   :garden {:builds [{:id "app"
                      :source-paths ["src/clj"]
-                     :stylesheet roomkey.css/stylesheet
+                     :stylesheet roomkey.site.css.app/app-stylesheet
                      :compiler {:output-to
                                 "resources/public/css/stylesheet.css"
                                 :pretty-print? false}}]}
