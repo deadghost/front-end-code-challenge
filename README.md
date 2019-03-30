@@ -30,6 +30,10 @@ https://adamwathan.me/css-utility-classes-and-separation-of-concerns/
 
 This project uses tailwind via CDN in conjunction with garden. It's my first
 time using Tailwind but I am enjoying it so I plan on porting it over to garden.
+
+I like how CSS code that can be refactored sticks out because they don't belong
+to a utility class.
+
 ### Garden
 You should already be familiar with this. It's pretty much clojure's
 equivalent of Sass, Less, etc.
@@ -152,3 +156,12 @@ because the work is very exploratory and things are subject to extreme change.
 With tests, every modification could necessitate twice the amount of code to
 be written as compared to without. Tests become important when there are many
 users or when the requirements are very well specified.
+
+## Logging
+TODO.
+
+## Production Deployment
+### Cross browser CSS
+We use PostCSS's autoprefixer before we deploy. This fixes many CSS issues but
+not all of them. The site needs to be eyeballed on different browsers to look
+for obvious broken styling.

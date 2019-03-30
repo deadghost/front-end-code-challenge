@@ -7,5 +7,3 @@
 (defn start []
   (handle-route (current-pathname))
   (push/start! history))
-
-(start)

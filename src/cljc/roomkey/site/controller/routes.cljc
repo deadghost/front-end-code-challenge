@@ -2,4 +2,4 @@
   (:require [bidi.bidi :as bidi]))
 
 (def routes
-  ["/" :index])
+  ["/" :home])

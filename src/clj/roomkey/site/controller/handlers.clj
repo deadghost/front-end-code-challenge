@@ -2,4 +2,4 @@
   (:require [roomkey.site.views.pages :as page]))
 
 (def handler-table
-  {:index page/index})
+  {:home page/home})

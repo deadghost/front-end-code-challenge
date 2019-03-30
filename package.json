@@ -6,7 +6,7 @@
   "dependencies": {
     "create-react-class": "^15.6.3",
     "react": "^16.8.4",
-    "react-date-range": "^0.9.4",
+    "react-dates": "^20.1.0",
     "react-dom": "^16.8.4",
     "source-map-support": "^0.5.11"
   },
