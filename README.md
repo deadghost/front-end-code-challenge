@@ -1,4 +1,24 @@
-# Frontend Challenge
+# Room Key Front End Development Challenge
+
+Greetings and salutations!
+
+Thanks for your interest in joining the team here at Room Key. Part of our
+evaluation process is to set an open-ended challenge which will allow you to
+flex your creative muscles and give you an opportunity to demonstrate your
+coding skills. We think (and hope you agree) that this is better than asking
+you to scribble algorithms on a whiteboard in an interview setting.
+
+We realize that this represents a significant investment of effort, but one we
+hope will be worthwhile for both you and us. Even if your application to Room
+Key is ultimately unsuccessful, you are more than welcome to use what you
+produce for this challenge in your personal portfolio.
+
+If you are successful then we'll invite you to our offices for a face-to-face
+interview and will use what you produce for this challenge as a starting
+point for our chat.
+
+Cheers!  
+The Room Key Team
 
 ## Scope
 The assignment is extremely open and the scope must be carefully considered
@@ -11,14 +31,89 @@ cypress.)
 
 (Looking back, doing both is too much. It's one thing to do basic functionality,
 it's another to actually have a nice UI and ok design. Design and UI aspects
-are extremely incremental and can be very detailed to the point someone with
-a specific kind of OCD might excel.)
+are extremely incremental and can't be done in one shot. It also takes time
+and research to understand what the business and application is trying to
+achieve.)
+
+### What I Actually Got Done
+
+- Roomkey business research, how and why does it tick
+- Roomkey application research, how the current site is done, strengths, weaknesses
+- Formulate ways to emphasize strengths and de-emphasize weaknesses
+- Basic re-frame SPA project setup
+- Clone of Front Page and skeleton of hotels and hotel page
+- Healthy README on my setup and thought processes
+
+What I actually got done codewise is honestly not very impressive. I front loaded
+time into understanding the product and why certain things are the way they are now.
+
+### What I Didn't Get Done
+A lot, it's literally a full time job.
+
+- Mobile-friendly design
+- Accessibility
+- Logging
+- Metrics
+- Testing
+- Page composition
+- UI adjustments
+- CSS -> Garden compiler
+- Page weight/Performance
+- Cross-browser compatibility
+- More organized lifecycle/page-state handling
+- Janky fugly bugs
+
+## Development Setup
+
+TODO: Simplify this into a startup script. Normally I have a `start-dev.bash`
+that just does everything.
+
+1. Start API proxy server:
+
+    $ npm install
+	$ npm start
+	
+2. Compile garden CSS:
+
+    $ cd roomkey
+    $ lein garden auto
+
+3. Start shadow-cljs:
+
+    $ npx shadow-cljs watch frontend
+
+The entry point to the frontend can be found at `roomkey/src/cljs/roomkey/app.cljs`	
+
+4. Start backend server:
+
+    $ lein run
+	
+The entry point to the backend server can be found at 
+`roomkey/src/clj/roomkey/site/server.clj`	
+
+5. Open http://localhost:1238/ in your browser.
 
 ## Technology
-### re-frame
+### JS
+#### shadow-cljs
+I gave this a shot after it was mentioned in our interview. It's great and I never
+looked at it before because the author doesn't sell it well. The killer feature
+here is that NPM libraries just work. Prior to this we had:
+
+- cljsjs, packages often woefully outdated and not in working condition
+- manual packaging, we had to write hand written externs and deal with dependencies
+- lein `:npm-deps` option which sometimes works for some libraries
+#### re-frame
 A framework based on the reagent library based on react. I've used this in
 previous projects and am fairly satisfied. 
-### Tailwind CSS
+#### react-dates
+React library written by AirBnB. I used it for the frontpage date range selector.
+There are a lot of junky, poorly maintained libraries on NPM. I just picked a
+date range library supported by a large organization. There's no deep underlying
+reason to pick this in particular.
+
+### CSS
+#### Tailwind CSS
 Tailwind is an utility based CSS library. I've been writing CSS for nearly
 a decade now and it's been a struggle to write CSS that is not "write-only".
 The unfortunate truth is that HTML is coupled with CSS and we are not able
@@ -32,19 +127,12 @@ This project uses tailwind via CDN in conjunction with garden. It's my first
 time using Tailwind but I am enjoying it so I plan on porting it over to garden.
 
 I like how CSS code that can be refactored sticks out because they don't belong
-to a utility class.
+to a utility class. It's also nice how the styling is part of the HTML code so
+most of the time we don't need to go digging in the CSS file to alter styling.
 
-### Garden
+#### Garden
 You should already be familiar with this. It's pretty much clojure's
 equivalent of Sass, Less, etc.
-### shadow-cljs
-I gave this a shot after it was mentioned in our interview. It's great and I never
-looked at it before because the author doesn't sell it well. The killer feature
-here is that NPM libraries just work. Prior to this we had:
-
-- cljsjs, packages often woefully outdated and not in working condition
-- manual packaging, we had to write hand written externs and deal with dependencies
-- lein `:npm-deps` option which sometimes works for some libraries
 
 ## Architecture
 This project uses Roomkey's API via proxy. I had to add a header to allow CORS.
@@ -53,7 +141,7 @@ differences from a more traditional backend MVC structure.
 
 - During routing we also dispatch for the necessary data for a given page via API
   in addition to dispatching for the associated view.
-- When a user navigates links, they user does not make a request for the URL. The
+- When a user navigates links, the user does not make a request for the URL. The
   user stays on the page, we change the URL, and the user's view changes. We do
   this via HTML5 pushState using the clojurescript pushy library.
   
@@ -121,34 +209,66 @@ Hotels' sites via 'Book at ...' button.
 
 Metrics collected can be as fine grained as we need.
 
+#### Things I'd Like (That Others Might Not)
+- Frontpage shows Popular Destinations
+- Frontpage shows Low Season Destinations
+
+Sometimes I want to be where everyone else is at. There's usually a good reason
+why they're somewhere at a given time of the year. Sometimes I want to be where
+no one is at, because that's where the best deals are. I also don't want to deal
+with a million other tourists in some tiny location. Showing some nearby
+destinations might be cool too. A tool that does this for a given date range
+might also be cool (popular/bargain destinations during my vacation slot).
+
 ### UI
 
+#### General
 - There's no color scheme to speak of. The logo is black and white and it looks
 like the other chosen colors could very well be defaults from bootstrap.
-- There's a lack of photos and illustrations. The one on the frontpage looks like
-it could be a stock photo or a default hero image from Wordpress.
+- There's a lack of photos and illustrations. It doesn't elicit business
+credibility. 
+#### Front Page
 - The product's value proposition must be made very clear. We can give you the
 very best rate because WE ARE THE HOTELS.
-- Everything needs to be more customer centric. Design decisions should stem
-from the customer. Examples on the front page: "Search not Sales". What does
-that even mean? My eyes glaze over and don't even read the thing following it,
-I don't care. "Set Price Alerts". That's kind of cool but that's a feature and
-not the product. I'd leave it on the front page but give it less weight.
-"Book Directly" should be given more importance and elucidated on.
+- Page elements should be considered from a customer perspective. Examples on 
+the front page: "Search not Sales". What does that even mean? My eyes glaze 
+over and don't even read the thing following it, I don't care. "Set Price 
+Alerts". That's kind of cool but that's a feature and not the product. I'd 
+leave it on the front page but give it less weight. "Book Directly" should be 
+given more importance and elucidated on.
+- Currency selector usability. If for example, I want Ukrainian Hyrvnia, I'd 
+have to scroll down pretty far. Other sites do a modal or whatever that let's 
+the user see ALL the currencies at once. 
+- Field separation. Check-in and check-out dates weirdly have Rooms and Guests 
+in the drop down as well. This defies my expectations and should be split into
+another field.
+- There's a Log in but not a Register. Unintuitively Register is hidden under
+Log in.
+- Hero image is not an efficient use of space. A left/right side split is probably
+superior for displaying more information.
 - Sign up to our mailing list. Every site wants my email. You'll need to give
 me a good reason.
 - Scout. I actually like Scout. Who did the design? I'd definitely leave it on
 the front page and elucidate on it further. 
 
-- There's a lot of small UI things that differ from other sites and
-are arguably worse. An example is the currency selector. If for example, I want
-Ukrainian Hyrvnia, I'd have to scroll down pretty far. Other sites do a modal
-or whatever that let's the user see ALL the currencies at once. Check-in and
-check-out dates weirdly have Rooms and Guests in the drop down as well. I click
-to input dates, why is this unrelated stuff bunched in as well?
-
 I'll leave it at that because I already feel like I'm going out of scope. I am
 not a designer but I can discuss and implement things from a designer.
+
+#### Hotel Results Page
+I don't have as many complaints about this page and the ones I do have are
+debatable.
+
+- A map is valuable, but I don't know about half the page valuable.
+- Filters and sorting a bit non-standard.
+- I'd like to see: distance from city center and distance from airport
+- A left sided filter might be nice.
+- I hate Too Low to Show prices but I understand there are business constraints.
+- Sorting by largest discount would be cool.
+- Nearest hotels to a given address might be nice.
+
+#### Hotel Page
+- Listing nearby attractions would be a nice touch.
+- Layout looks a bit funny to me but I'd need to take a longer look.
 
 ## Testing
 TODO. Generally I don't write tests during a project's early stages. This is
@@ -158,10 +278,17 @@ be written as compared to without. Tests become important when there are many
 users or when the requirements are very well specified.
 
 ## Logging
-TODO.
+TODO
+
+### Mobile/Tablet CSS
+TODO
+
+### Accessibility
+TODO
 
 ## Production Deployment
+TODO
 ### Cross browser CSS
-We use PostCSS's autoprefixer before we deploy. This fixes many CSS issues but
+TODO We use PostCSS's autoprefixer before we deploy. This fixes many CSS issues but
 not all of them. The site needs to be eyeballed on different browsers to look
 for obvious broken styling.
