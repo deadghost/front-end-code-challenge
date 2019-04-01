@@ -65,28 +65,36 @@ A lot, it's literally a full time job.
 
 ## Development Setup
 
-TODO: Simplify this into a startup script. Normally I have a `start-dev.bash`
+TODO: Simplify this into a startup script. Normally I have a `start-dev.sh`
 that just does everything.
 
 1. Start API proxy server:
 
-    $ npm install
-	$ npm start
+```
+$ npm install
+$ npm start
+```
 	
 2. Compile garden CSS:
 
-    $ cd roomkey
-    $ lein garden auto
+```
+$ cd roomkey
+$ lein garden auto
+```
 
 3. Start shadow-cljs:
 
-    $ npx shadow-cljs watch frontend
+```
+$ npx shadow-cljs watch frontend
+```
 
 The entry point to the frontend can be found at `roomkey/src/cljs/roomkey/app.cljs`	
 
 4. Start backend server:
 
-    $ lein run
+```
+$ lein run
+```
 	
 The entry point to the backend server can be found at 
 `roomkey/src/clj/roomkey/site/server.clj`	
