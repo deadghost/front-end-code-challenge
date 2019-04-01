@@ -12,8 +12,8 @@
    [roomkey.util :refer [query-params-str current-href]]))
 
 (defn hotel [data]
-  [:a {:class ["w-2/5" "m-2" "p-2" "bg-grey-lighter" "h-32" "inline-block"
-               "align-top" "text-black" "no-underline"]
+  [:a {:class ["w-2/5" "m-2" "p-2" "bg-grey-lighter" "hover:bg-grey-light"
+               "h-32" "inline-block" "align-top" "text-black" "no-underline"]
        :href (str "/hotels/" (:udicode data) "?"
                   (query-params-str (current-href)))}
    [:h2 (:name data)]])
