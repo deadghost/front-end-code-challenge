@@ -2,20 +2,25 @@
   (:require [re-frame.core :refer [register-sub]])
   (:require-macros [reagent.ratom :refer [reaction]]))
 
-(register-sub
- :home/guest-quantity
- (fn [db [_]]
-   (reaction (get-in @db [:state :guest-quantity]))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Search
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(register-sub
- :home/room-quantity
- (fn [db [_]]
-   (reaction (get-in @db [:state :room-quantity]))))
+;; Field 1: Where are you going?
+;;==============================================================================
 
 (register-sub
  :home/autofill-locations
  (fn [db [_]]
    (reaction (get-in @db [:data :autofill-locations]))))
+
+(register-sub
+ :home/location
+ (fn [db [_]]
+   (reaction (get-in @db [:state :location]))))
+
+;; Field 2: Check-in -> Check-out
+;;==============================================================================
 
 (register-sub
  :home/check-in-date
@@ -31,3 +36,16 @@
  :home/date-focused-input
  (fn [db [_]]
    (reaction (get-in @db [:state :date-focused-input]))))
+
+;; Field 3: x Guests y Rooms
+;;==============================================================================
+
+(register-sub
+ :home/guest-quantity
+ (fn [db [_]]
+   (reaction (get-in @db [:state :guest-quantity]))))
+
+(register-sub
+ :home/room-quantity
+ (fn [db [_]]
+   (reaction (get-in @db [:state :room-quantity]))))

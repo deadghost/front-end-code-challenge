@@ -5,7 +5,9 @@
             [garden.selectors :as sel]))
 
 (def bg-blue
-  [:.bg-blue {:background "#5c5cf7"}])
+  (let [color "#5c5cf7"]
+    [[:.bg-blue {:background color}]
+     [:.hover:bg-blue:hover {:background color}]]))
 
 (def bg-dark-blue-trans
   [:.bg-dark-blue-trans {:background "rgba(73,73,196,0.9)"}])
@@ -13,11 +15,8 @@
 (defn index-page []
   [[:.hero {:background-image "url(/imgs/gili-t.jpg)"
             :min-height "565px"}]
-   ;; These are behavior/interactive CSS. It *might* be possible to make these a
+   ;; This is behavior/interactive CSS. It *might* be possible to make this a
    ;; utility class.
-   [:#location-search-dropdown {:display "none"}]
-   ["#location-search:focus + #location-search-dropdown"
-    {:display "block"}]
    [:#guests-rooms-dropdown {:display "none"}]
    ["#guests-rooms-toggle:checked + #guests-rooms-dropdown"
     {:display "block"}]

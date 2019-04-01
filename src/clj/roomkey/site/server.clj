@@ -16,3 +16,5 @@
      :port 1238
      :path "/"
      :virtual-host ["localhost"]}))
+
+(def -main run)

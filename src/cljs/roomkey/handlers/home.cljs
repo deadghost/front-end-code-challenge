@@ -15,21 +15,8 @@
 ;; Search
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(reg-event-db
- :home/set-guest-quantity
- (fn [db [_ quantity]]
-   (assoc-in db [:state :guest-quantity]
-             (if (< quantity 1) ;; Quantity can't be lower than 1.
-               1
-               quantity))))
-
-(reg-event-db
- :home/set-room-quantity
- (fn [db [_ quantity]]
-   (assoc-in db [:state :room-quantity]
-             (if (< quantity 1) ;; Quantity can't be lower than 1.
-               1
-               quantity))))
+;; Field 1: Where are you going?
+;;==============================================================================
 
 (reg-event-fx
  :home/autofill-location
@@ -48,6 +35,14 @@
    (assoc-in db [:data :autofill-locations] locations)))
 
 (reg-event-db
+ :home/set-location
+ (fn [db [_ location]]
+   (assoc-in db [:state :location] location)))
+
+;; Field 2: Check-in -> Check-out
+;;==============================================================================
+
+(reg-event-db
  :home/set-check-in-date
  (fn [db [_ date]]
    (assoc-in db [:state :check-in-date] date)))
@@ -61,3 +56,22 @@
  :home/set-date-focused-input
  (fn [db [_ focused-input]]
    (assoc-in db [:state :date-focused-input] focused-input)))
+
+;; Field 3: x Guests y Rooms
+;;==============================================================================
+
+(reg-event-db
+ :home/set-guest-quantity
+ (fn [db [_ quantity]]
+   (assoc-in db [:state :guest-quantity]
+             (if (< quantity 1) ;; Quantity can't be lower than 1.
+               1
+               quantity))))
+
+(reg-event-db
+ :home/set-room-quantity
+ (fn [db [_ quantity]]
+   (assoc-in db [:state :room-quantity]
+             (if (< quantity 1) ;; Quantity can't be lower than 1.
+               1
+               quantity))))

@@ -1,8 +1,8 @@
 (ns roomkey.app
   (:require
    [pushy.core :as push]
-   [roomkey.controller.handler
-    :refer [handle-route current-pathname history]]))
+   [roomkey.util :refer [current-pathname]]
+   [roomkey.controller.handler :refer [handle-route history]]))
 
 (defn start []
   (handle-route (current-pathname))

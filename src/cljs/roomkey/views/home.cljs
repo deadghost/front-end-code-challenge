@@ -6,10 +6,9 @@
    [roomkey.views.components.top-nav :refer [top-nav]]
    [roomkey.views.components.footer :refer [footer]]
    [roomkey.handlers.home]
+   [roomkey.handlers.hotels]
    [roomkey.subs.home]
    [roomkey.subs.util]
-   [roomkey.views.components.datepicker :refer [datepicker]]
-   ["react" :as react]
    ["react-dates/initialize"]
    ["react-dates" :as react-dates]))
 
@@ -53,10 +52,11 @@
         "+"]]]]))
 
 (defn search-location []
-  (let [autofill-locations (subscribe [:home/autofill-locations])]
+  (let [autofill-locations (subscribe [:home/autofill-locations])
+        location (subscribe [:home/location])]
     [:div {:class ["relative"]}
      [:input
-      {:class ["p-2" "mr-2" "h-full"]
+      {:class ["p-2" "mr-2"]
        :id "location-search"
        :placeholder "Where are you going?"
        :on-key-up
@@ -66,12 +66,21 @@
            (if (>= (count value) 3)
              (dispatch [:home/autofill-location value])
              (dispatch [:home/set-autofill-locations nil]))))}]
-     [:div {:class ["absolute"]
-            :id "location-search-dropdown"}
+     [:div {:class ["absolute"]}
       [:ul {:class ["bg-white" "list-reset"]}
-       (for [location @autofill-locations]
-         ^{:key (:id location)}
-         [:li (:name location)])]]]))
+       (doall
+        (for [location-option @autofill-locations]
+          ^{:key (:id location-option)}
+          [:li {:class ["cursor-pointer" "hover:bg-grey-light"]
+                :on-click
+                (fn []
+                  (dispatch [:util/dispatch-n
+                             [[:home/set-location location-option]
+                              [:home/set-autofill-locations nil]]])
+                  (set! (.-value (sel1 :#location-search))
+                        (:name location-option))
+                  (.focus (.getElementById js/document "check-in-date")))}
+           (:name location-option)]))]]]))
 
 (defn search []
   (let [guest-quantity (subscribe [:home/guest-quantity])
@@ -85,21 +94,25 @@
       [:div {:class "relative"}
        [DateRangePicker
         {:start-date @check-in-date
-         :start-date-id "hello"
+         :start-date-id "check-in-date"
          :end-date @check-out-date
-         :end-date-id "bye"
+         :end-date-id "check-out-date"
          :on-dates-change
          #(let [{:keys [startDate endDate]} (js->clj % :keywordize-keys true)]
             (dispatch [:util/dispatch-n
                        [[:home/set-check-in-date startDate]
-                        [:home/set-check-out-date endDate]]]))
+                        [:home/set-check-out-date endDate]]])
+            (when (and startDate endDate)
+              (set! (.-checked (.getElementById js/document
+                                                "guests-rooms-toggle"))
+                    true)))
          :focused-input @date-focused-input
          :on-focus-change #(dispatch [:home/set-date-focused-input %])
          :start-date-placeholder-text "Check-in"
          :end-date-placeholder-text "Check-out"}]]
       [:div {:class ["relative"]}
        [:label {:id "guests-rooms"
-                :class ["h-full" "inline-flex" "items-center"]
+                :class ["inline-flex" "items-center"]
                 :for "guests-rooms-toggle"}
         [:span {:class ["p-2" "block"]}
          (str @guest-quantity
@@ -114,9 +127,32 @@
                 :class ["hidden"]
                 :id "guests-rooms-toggle"}]
        [guests-rooms-dropdown]]]
-     [:button {:class ["bg-blue" "hover:bg-blue-dark" "text-white" "font-bold"
-                       "p-2" "rounded"]}
-      "Search"]]))
+     (let [guest-quantity (subscribe [:home/guest-quantity])
+           room-quantity (subscribe [:home/room-quantity])
+           location (subscribe [:home/location])
+           check-in-date (subscribe [:home/check-in-date])
+           check-out-date (subscribe [:home/check-out-date])]
+       [:a {:class ["text-white" "no-underline"]
+            ;; This definitely can be cleaned up.
+            :href (str "/locations/"
+                       (:id @location)
+                       "/hotels?"
+                       "checkIn=" (when @check-in-date
+                                    (.format @check-in-date "YYYY-MM-DD"))
+                       "&checkOut=" (when @check-out-date
+                                      (.format @check-out-date "YYYY-MM-DD"))
+                       "&guests=" @guest-quantity
+                       "&rooms=" @room-quantity)}
+        [:button {:class ["bg-blue" "hover:bg-blue-dark" "text-white"
+                          "font-bold" "p-2" "rounded"]
+                  :on-click
+                  #(dispatch [:hotels/init
+                              (:id @location)
+                              (.format @check-in-date "YYYY-MM-DD")
+                              (.format @check-out-date "YYYY-MM-DD")
+                              @guest-quantity
+                              @room-quantity])}
+         "Search"]])]))
 
 (defn hero []
   [:div {:class ["hero" "flex" "flex-col" "items-center" "justify-center"
@@ -147,7 +183,7 @@ knowing you’ve got the best deal."]]
      [:input {:class ["inline-block"]
               :placeholder "Email"}]
      [:button {:class ["bg-blue" "hover:bg-blue-dark" "text-white" "font-bold"
-                       "py-2" "rounded"]}
+                       "p-2" "rounded" "whitespace-no-wrap"]}
       "Sign Up"]]]
    [:div {:class ["p-4"]}
     [:h3 "Take Room Key With You!"]
@@ -158,12 +194,14 @@ travel sites can’t."]
                      "roomkey/home/footer-tiles/img/scout-logo.svg")}]]])
 
 (defn home []
-  [:div
-   [top-nav]
-   [hero]
-   [social-proof]
-   [misc]
-   [footer]]) 
+  (let [db (subscribe [:util/db])] ;; Dev
+    [:div
+     [top-nav]
+     [hero]
+     [social-proof]
+     [misc]
+     [footer]
+     [:p (str @db)]])) 
 
 (defn home-page []
   (r/create-class

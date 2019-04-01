@@ -10,6 +10,7 @@
                  [ring/ring-defaults "0.2.1"] ; Middleware
                  [bidi "2.1.2"] ; Routing
                  ]
+  :main roomkey.site.server
   :source-paths ["src/clj" "src/cljc"]
   :target-path "target/%s"
   :plugins [[lein-garden "0.3.0"]]

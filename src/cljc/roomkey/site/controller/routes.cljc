@@ -2,4 +2,7 @@
   (:require [bidi.bidi :as bidi]))
 
 (def routes
-  ["/" :home])
+  ["/"
+   {"" :home
+    ["locations/" :location-id "/hotels"] :hotels
+    ["hotels/" :hotel-id] :hotel}])
