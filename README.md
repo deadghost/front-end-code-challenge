@@ -130,6 +130,9 @@ I like how CSS code that can be refactored sticks out because they don't belong
 to a utility class. It's also nice how the styling is part of the HTML code so
 most of the time we don't need to go digging in the CSS file to alter styling.
 
+The tiny amount of CSS I wrote can be found in 
+`src/clj/roomkey/site/css/app.clj`.
+
 #### Garden
 You should already be familiar with this. It's pretty much clojure's
 equivalent of Sass, Less, etc.
