@@ -19,7 +19,6 @@
     "webpack": "3.8.1",
     "webpack-dev-server": "2.9.5"
   },
-
   "main": "index.js",
   "dependencies": {
     "create-react-class": "^15.6.3",
